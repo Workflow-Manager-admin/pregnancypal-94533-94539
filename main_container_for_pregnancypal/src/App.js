@@ -1,36 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
-function App() {
-  return (
-    <div className="app">
-      <nav className="navbar">
-        <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-            <div className="logo">
-              <span className="logo-symbol">*</span> KAVIA AI
-            </div>
-            <button className="btn">Template Button</button>
-          </div>
-        </div>
-      </nav>
+// Common components
+import Header from './components/common/Header';
+import Sidebar from './components/common/Sidebar';
 
-      <main>
-        <div className="container">
-          <div className="hero">
-            <div className="subtitle">AI Workflow Manager Template</div>
-            
-            <h1 className="title">main_container_for_pregnancypal</h1>
-            
-            <div className="description">
-              Start building your application.
+// Feature components
+import Dashboard from './components/features/Dashboard';
+import HealthTracker from './components/features/HealthTracker';
+import MedicalAdvice from './components/features/MedicalAdvice';
+import EmotionalSupport from './components/features/EmotionalSupport';
+import Resources from './components/features/Resources';
+
+/**
+ * Main App component for PregnancyPal
+ * Acts as the container for the entire application
+ */
+function App() {
+  const [activeSection, setActiveSection] = useState('dashboard');
+
+  return (
+    <Router>
+      <div className="pregnancypal-app">
+        <Header />
+        
+        <div className="main-container">
+          <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
+          
+          <main className="content">
+            <div className="container">
+              <Routes>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/health" element={<HealthTracker />} />
+                <Route path="/medical" element={<MedicalAdvice />} />
+                <Route path="/support" element={<EmotionalSupport />} />
+                <Route path="/resources" element={<Resources />} />
+                <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              </Routes>
             </div>
-            
-            <button className="btn btn-large">Button</button>
-          </div>
+          </main>
         </div>
-      </main>
-    </div>
+      </div>
+    </Router>
   );
 }
 
